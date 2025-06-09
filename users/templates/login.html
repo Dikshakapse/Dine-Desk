@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Login | DineDesk{% endblock %}
+
+{% block content %}
+<h2>Login</h2>
+<form method="post">
+  {% csrf_token %}
+  <!-- Replace with Django form or HTML input fields -->
+  <div class="mb-3">
+    <label>Email</label>
+    <input type="email" class="form-control" name="email" />
+  </div>
+  <div class="mb-3">
+    <label>Password</label>
+    <input type="password" class="form-control" name="password" />
+  </div>
+  <button type="submit" class="btn btn-success">Login</button>
+</form>
+{% endblock %}
