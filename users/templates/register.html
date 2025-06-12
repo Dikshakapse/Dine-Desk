@@ -3,9 +3,15 @@
 
 {% block content %}
 <h2 class="mb-4">Create an Account</h2>
+
+{% if registered %}
+  <div class="alert alert-success">
+    🎉 Account for <strong>{{ username }}</strong> registered successfully!
+  </div>
+  <a href="{% url 'login' %}" class="btn btn-success">Go to Login</a>
+{% else %}
 <form method="post">
   {% csrf_token %}
-  <!-- Replace these with Django form fields if using forms.Form or forms.ModelForm -->
   <div class="mb-3">
     <label for="username" class="form-label">Username</label>
     <input type="text" id="username" name="username" class="form-control" required />
@@ -28,4 +34,5 @@
 
   <button type="submit" class="btn btn-success">Register</button>
 </form>
+{% endif %}
 {% endblock %}
