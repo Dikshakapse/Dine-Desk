@@ -3,6 +3,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.utils.timezone import now
+from menu.models import DailyMenu
+from orders.models import Order
+
 
 def homepage(request):
     return render(request, 'home.html')
@@ -56,6 +60,9 @@ def logout_view(request):
     messages.info(request, "You've been logged out.")
     return redirect('home')
 
+
 @login_required(login_url='login')
 def order_view(request):
-    return render(request, 'order.html')
+    today = now().date()
+    menu_items = DailyMenu.objects.filter(available_on=today)
+    return render(request, 'order.html', {'menu_items': menu_items})

@@ -1,3 +1,29 @@
-<html>
-    <h1>this is the order page</h1>
-</html>
+{% extends 'base.html' %}
+{% block title %}Order | DineDesk{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Today’s Menu</h2>
+
+<div class="row">
+  {% for item in menu_items %}
+  <div class="col-md-4 mb-4">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">{{ item.name }}</h5>
+        <p class="card-text">{{ item.description }}</p>
+        <p><strong>Price:</strong> ₹{{ item.price }}</p>
+
+        <form method="post" action="{% url 'add_to_cart' item.id %}">
+          {% csrf_token %}
+          <div class="input-group mb-3">
+            <input type="number" name="quantity" value="1" class="form-control" min="1" />
+            <button type="submit" class="btn btn-success">Add</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}
