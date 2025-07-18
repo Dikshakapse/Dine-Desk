@@ -6,6 +6,10 @@ from django.contrib import messages
 from django.utils.timezone import now
 from menu.models import DailyMenu
 from orders.models import Order
+from backend.serializers import customerSerializer
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
 
 
 def homepage(request):
@@ -64,5 +68,27 @@ def logout_view(request):
 @login_required(login_url='login')
 def order_view(request):
     today = now().date()
-    menu_items = DailyMenu.objects.filter(available_on=today)
-    return render(request, 'order.html', {'menu_items': menu_items})
+    menu_items = DailyMenu.objects.all()
+    return render(request, 'order.html')
+
+
+@api_view(['POST'])
+def customerview(request):
+    if request.method=='POST':
+        serializer= customerSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def order_list(request):
+    if request.method=='GET':
+        orders =Order.objects.all()
+        serilaizer = customerSerializer(orders,many=True)
+        return Response(serilaizer.data, status=status.HTTP_200_OK)
+    return Response({"message": "Method not allowed"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        
+
+
