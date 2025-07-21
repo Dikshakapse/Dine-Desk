@@ -10,6 +10,9 @@ from backend.serializers import customerSerializer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework import viewsets
+from .models import User, UserProfile, TiffinProvider, DailyMenu, Order, Billing, Feedback, DeliveryTracking
+from .serializers import UserSerializer, UserProfileSerializer, TiffinProviderSerializer, DailyMenuSerializer, OrderSerializer, BillingSerializer, FeedbackSerializer, DeliveryTrackingSerializer
 
 
 def homepage(request):
@@ -89,6 +92,38 @@ def order_list(request):
         serilaizer = customerSerializer(orders,many=True)
         return Response(serilaizer.data, status=status.HTTP_200_OK)
     return Response({"message": "Method not allowed"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
-        
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+class UserProfileViewSet(viewsets.ModelViewSet):
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileSerializer
+
+class TiffinProviderViewSet(viewsets.ModelViewSet):
+    queryset = TiffinProvider.objects.all()
+    serializer_class = TiffinProviderSerializer
+
+class DailyMenuViewSet(viewsets.ModelViewSet):
+    queryset = DailyMenu.objects.all()
+    serializer_class = DailyMenuSerializer
+
+class OrderViewSet(viewsets.ModelViewSet):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+
+class BillingViewSet(viewsets.ModelViewSet):
+    queryset = Billing.objects.all()
+    serializer_class = BillingSerializer
+
+class FeedbackViewSet(viewsets.ModelViewSet):
+    queryset = Feedback.objects.all()
+    serializer_class = FeedbackSerializer
+
+class DeliveryTrackingViewSet(viewsets.ModelViewSet):
+    queryset = DeliveryTracking.objects.all()
+    serializer_class = DeliveryTrackingSerializer
+
 
 
